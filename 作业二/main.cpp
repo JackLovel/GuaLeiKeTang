@@ -234,6 +234,78 @@ testDecode1() {
     ensure(decode1("hx") == "gw", "decode1 2");
 }
 
+// 作业 7
+// 实现 encode2
+// 多了一个参数 shift 表示移的位数
+//
+// 注意:
+//     s 是一个只包含小写字母的字符串
+//
+// 实现步骤
+//     1. 和作业 5 类似，不一样的地方在于这里是计算出 index 之后，找出 lower 中 index + shift 的元素，然后拼接在一起
+//     2. 注意考虑边界情况，即 index + shift 超出了边界的情况
+
+string
+encode2(const string &s, int shift) {
+// 这里是两个字符串, 包含了大写字母和小写字母
+    // 用 const 修饰是因为它们并不会被修改
+    const string lower = "abcdefghijklmnopqrstuvwxyz";
+    const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // 初始化一个空字符串
+    string result = "";
+    size_t i = 0;
+    while (i < s.size()) {
+        // 注意, 这个 find 已经帮你实现了
+        int index = find(lower, s[i]);
+        if (index + shift <= 25) {
+            // 字符串可以用加号拼接, 不明白可以 log 一下
+            result += lower[index + shift]; 
+        } else {
+            result += lower[(index + shift) - 26];      
+        }
+
+        i += 1;
+    }
+    return result;
+}
+
+void
+testEncode2() {
+    ensure(encode2("afz", 2) == "chb", "encode2 1");
+    ensure(encode2("gw", 3) == "jz", "encode2 2");
+}
+
+// 作业 8
+string
+decode2(const string &s, int shift) {
+// 这里是两个字符串, 包含了大写字母和小写字母
+    // 用 const 修饰是因为它们并不会被修改
+    const string lower = "abcdefghijklmnopqrstuvwxyz";
+    const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // 初始化一个空字符串
+    string result = "";
+    size_t i = 0;
+    while (i < s.size()) {
+        // 注意, 这个 find 已经帮你实现了
+        int index = find(lower, s[i]);
+        if (index - shift >= 0) {
+            // 字符串可以用加号拼接, 不明白可以 log 一下
+            result += lower[index - shift]; 
+        } else {
+            result += lower[26 + (index - shift)];      
+        }
+
+        i += 1;
+    }
+    return result;
+}
+
+void
+testDecode2() {
+    ensure(decode2("chb", 2) == "afz", "decode2 1");
+    ensure(decode2("jz", 3) == "gw", "decode2 2");
+}
+
 void test() {
     //testFind();   
     // testLowercase(); 
@@ -241,8 +313,11 @@ void test() {
     // testLowercase1();
     // testUppercase1();
     // testEncode1();
-    testDecode1();
+    // testDecode1();
+    // testEncode2();
+    testDecode2();
 }
+
 
 // main 函数的参数是规定，复制粘贴即可
 int
