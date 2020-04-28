@@ -306,6 +306,36 @@ testDecode2() {
     ensure(decode2("jz", 3) == "gw", "decode2 2");
 }
 
+// 作业 9
+string
+encode3(const string &s, int shift) {
+    const string lower = "abcdefghijklmnopqrstuvwxyz";
+    const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    string result = "";
+    size_t i = 0;
+    while (i < s.size()) {
+        if (isalpha(s[i]) == 0) {
+            result += s[i];
+        } else {
+            int index = find(lower, s[i]);
+            if (index + shift <= 25) {
+                result += lower[index + shift]; 
+            } else {
+                result += lower[(index + shift) - 26];      
+            }
+        }
+     
+        i += 1;
+    }
+    return result;
+}
+
+void
+testEncode3() {
+    ensure(encode3("a fz", 2) == "c hb", "encode3 1");
+    ensure(encode3("g#w", 3) == "j#z", "encode3 2");
+}
+
 void test() {
     //testFind();   
     // testLowercase(); 
@@ -315,9 +345,9 @@ void test() {
     // testEncode1();
     // testDecode1();
     // testEncode2();
-    testDecode2();
+    // testDecode2();
+    testEncode3();
 }
-
 
 // main 函数的参数是规定，复制粘贴即可
 int
