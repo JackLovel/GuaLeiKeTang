@@ -173,19 +173,6 @@ testUppercase1() {
 }
 
 // 作业 5
-// 实现一个叫 凯撒加密 的加密算法, 描述如下
-// 对于一个字符串, 整体移位, 就是加密
-// 以右移 1 位为例
-// 原始信息 'afz' 会被加密为 'bga'
-// 实现 encode1 函数, 把明文加密成密码并返回
-// 右移 1 位
-//
-// 注意:
-//     s 是一个只包含小写字母的字符串
-//
-// 实现步骤
-//     1. 遍历字符串 s，找出每一位元素在 lower 中的 index，然后找出 lower 中 index + 1 的元素，拼接在一起
-//     2. 注意考虑边界情况，如果计算出来 index 25(也就是字符 'z')，则取出第一位元素（也就是 'a'）
 string
 encode1(const string &s) {
 // 这里是两个字符串, 包含了大写字母和小写字母
@@ -216,13 +203,45 @@ testEncode1() {
     ensure(encode1("gw") == "hx", "encode1 2");
 }
 
+// 作业 6
+string
+decode1(const string &s) {
+// 这里是两个字符串, 包含了大写字母和小写字母
+    // 用 const 修饰是因为它们并不会被修改
+    const string lower = "abcdefghijklmnopqrstuvwxyz";
+    const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // 初始化一个空字符串
+    string result = "";
+    size_t i = 0;
+    while (i < s.size()) {
+        // 注意, 这个 find 已经帮你实现了
+        int index = find(lower, s[i]);
+        if (index == 0) {
+            result += 'z';
+        } else {
+            // 字符串可以用加号拼接, 不明白可以 log 一下
+            result += lower[index - 1];            
+        }
+
+        i += 1;
+    }
+    return result;
+}
+
+void
+testDecode1() {
+    ensure(decode1("bga") == "afz", "decode1 1");
+    ensure(decode1("hx") == "gw", "decode1 2");
+}
+
 void test() {
     //testFind();   
     // testLowercase(); 
     // testUppercase();
     // testLowercase1();
     // testUppercase1();
-    testEncode1();
+    // testEncode1();
+    testDecode1();
 }
 
 // main 函数的参数是规定，复制粘贴即可
