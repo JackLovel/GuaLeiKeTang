@@ -336,6 +336,51 @@ testEncode3() {
     ensure(encode3("g#w", 3) == "j#z", "encode3 2");
 }
 
+// 作业 10
+// 实现 decode3
+// 多了一个参数 shift 表示移的位数
+// 如果 s 中包含了不是字母的字符, 比如空格或者其他符号, 则对这个字符不做处理保留原样
+//
+// 注意:
+//     s 是一个只包含小写字母和不是字母的字符的字符串
+//
+// 实现步骤
+//     1. 作业 10 和作业 8 类似，所以在遍历的时候考虑 s 是否为小写字母。如果是小写字母就按照作业 8 的方式处理
+//     2. 否则直接拼接结果
+
+string
+decode3(const string &s, int shift) {
+// 这里是两个字符串, 包含了大写字母和小写字母
+    // 用 const 修饰是因为它们并不会被修改
+    const string lower = "abcdefghijklmnopqrstuvwxyz";
+    const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // 初始化一个空字符串
+    string result = "";
+    size_t i = 0;
+    while (i < s.size()) {
+        // 注意, 这个 find 已经帮你实现了
+         if (isalpha(s[i]) == 0) {
+            result += s[i];
+        } else {
+            int index = find(lower, s[i]);
+            if (index - shift >= 0) {
+                // 字符串可以用加号拼接, 不明白可以 log 一下
+                result += lower[index - shift]; 
+            } else {
+                result += lower[26 + (index - shift)];      
+            }
+        }
+        
+        i += 1;
+    }
+    return result;
+}
+
+void
+testDecode3() {
+    ensure(decode3("ch#b", 2) == "af#z", "decode3 1");
+    ensure(decode3("j z", 3) == "g w", "decode3 2");
+}
 void test() {
     //testFind();   
     // testLowercase(); 
@@ -346,7 +391,8 @@ void test() {
     // testDecode1();
     // testEncode2();
     // testDecode2();
-    testEncode3();
+    // testEncode3();
+    testDecode3();
 }
 
 // main 函数的参数是规定，复制粘贴即可
