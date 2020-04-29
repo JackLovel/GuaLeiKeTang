@@ -65,20 +65,6 @@ testZfill() {
 //
 string
 rjust(const string &s, int width, char fillchar=' ') {
-    // 如果 s 长度小于 width, 则在开头用 fillchar 填充并返回
-
-    // 返回 string 类型
-
-    // 提示:
-    // 类似于作业 1, 但有几个区别
-    // 一是不需要先用 string() 转换类型
-    // 二是填充的字符不是 0 而是可以自行定义
-
-    // 分步提示：
-    // 1. 计算需要用 fillchar 生成的字符串长度
-    // 2. 使用作业 1 中的辅助函数 nChar, 修改它以便符合本题的使用
-    // 3. 调用修改后的 nChar 生成填充用的字符串
-    // 4. 拼接并返回结果
     string result = ""; 
     int n = s.length() - width;
     if (n < 0) {
@@ -105,11 +91,40 @@ testRjust() {
     ensure(rjust("gua", 5, '*') == "**gua", "rjust 测试 3");
 }
 
+// 作业 3
+//
+string ljust(string s, int width, char fillchar=' ') {
+    string result = ""; 
+    int n = s.length() - width;
+    if (n < 0) {
+        n = -n; 
+        string r = "";
+        int i = 0;
+        while(i < n) {
+            r += fillchar;
+            i += 1;
+        }
+        result = s + r; 
+    } else {
+        result = s; 
+    }
+    
+    return result; 
+}
+
+// 测试函数
+void
+testLjust() {
+    ensure(ljust("gua", 5) == "gua  ", "ljust 测试 1");
+    ensure(ljust("guagua", 5) == "guagua", "ljust 测试 2");
+    ensure(ljust("gua", 5, '*') == "gua**", "ljust 测试 3");
+}
+
 void
 test() {
     // testZfill();
-    testRjust();
-    // testLjust();
+    // testRjust();
+    testLjust();
     // 剩下的测试函数调用需要你自行补足
 }
 
