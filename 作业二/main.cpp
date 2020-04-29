@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <time.h>
+
 
 using namespace std;
 
@@ -359,7 +361,7 @@ decode3(const string &s, int shift) {
     size_t i = 0;
     while (i < s.size()) {
         // 注意, 这个 find 已经帮你实现了
-         if (isalpha(s[i]) == 0) {
+        if (isalpha(s[i]) == 0) {
             result += s[i];
         } else {
             int index = find(lower, s[i]);
@@ -381,6 +383,67 @@ testDecode3() {
     ensure(decode3("ch#b", 2) == "af#z", "decode3 1");
     ensure(decode3("j z", 3) == "g w", "decode3 2");
 }
+
+// 作业 11
+// 知乎有一个求助题, 破译密码的
+// 链接在此
+// https://www.zhihu.com/question/28324597
+// 这一看就是凯撒加密...
+// 请帮助楼主解出原文
+//
+// 实现步骤
+//     1. 作业 11 和作业 10 的区别在于，作业 11 的 shift 是不确定的，所以需要把 shift 都尝试一遍
+//     2. 在尝试的时候要先把 code 转成小写（大写字母转成小写，空格和标点不要转）
+//     3. shift 的可能取值为 1 - 25，把这些情况都尝试一遍，观察解密出来的结果
+//
+// 这里需要肉眼观察出正确的译文
+// 在第五节课中，会教大家如何自动识别出正确的译文
+// （这里的第五节课，是指《〖快编程〗的免费编程入门课》第五节）
+string 
+toLowercase2(string s) {
+    // 字母转小写，并且省略空格和标点不要转
+    string lowerCode = ""; 
+    string code = s; 
+
+    const string lower = "abcdefghijklmnopqrstuvwxyz";
+    const string upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    // 初始化一个空字符串
+    string result = "";
+    size_t i = 0;
+    while (i < code.size()) {
+        if (isalpha(code[i]) == 0) {
+            lowerCode += code[i];
+        } else {
+            int index = find(upper, code[i]);
+            if (index == -1) {
+                lowerCode += code[i];
+            } else {
+                lowerCode += lower[index];            
+            }
+        }
+        i += 1;
+    }
+
+    return lowerCode;
+}
+
+string
+decode4() {
+    const string code = "VRPHWLPHV L ZDQW WR FKDW ZLWK BRX,EXW L KDYH QR UHDVRQ WR FKDW ZLWK BRX";
+    string lowerCode = toLowercase2(code); 
+    
+    srand(time(NULL));
+    int shift = rand() % 25 + 1;
+    string result = decode3(lowerCode, shift);
+    // log(result);
+    
+    return result; 
+}
+
+void testDecode4() {
+    log(decode4());
+}
+
 void test() {
     //testFind();   
     // testLowercase(); 
@@ -392,7 +455,8 @@ void test() {
     // testEncode2();
     // testDecode2();
     // testEncode3();
-    testDecode3();
+    // testDecode3();
+    testDecode4();
 }
 
 // main 函数的参数是规定，复制粘贴即可
