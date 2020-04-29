@@ -120,11 +120,62 @@ testLjust() {
     ensure(ljust("gua", 5, '*') == "gua**", "ljust 测试 3");
 }
 
+// 作业 4
+//
+
+string nChar1(int n, char fillchar=' ') {
+    // char fillchar = '0';
+    string r = "";
+    int i = 0;
+    while(i < n) {
+        r += fillchar;
+        i += 1;
+    }
+    return r;
+}
+
+
+string
+center(const string &s, int width, char fillchar=' ') {
+    string result = ""; 
+    int n = s.length() - width;
+    if (n < 0) {
+        n = -n; 
+
+        int lr = 0; 
+        int rr = 0; 
+
+        if (n % 2 == 0) {
+            lr = rr = n / 2; 
+        } else {
+            lr = n / 2;
+            rr = n - lr; 
+        }
+    
+        result =  nChar1(lr, fillchar) + s + nChar1(rr, fillchar); 
+    } else {
+        result = s; 
+    }
+    
+    return result; 
+}
+
+// 测试函数
+void
+testCenter() {
+    // log(center)
+    ensure(center("gua", 5) == " gua ", "center 测试 1");
+    ensure(center("gua", 5, '*') == "*gua*", "center 测试 2");
+    ensure(center("gw", 5) == " gw  ", "center 测试 3");
+    ensure(center("gua", 6) == " gua  ", "center 测试 4");
+}
+
 void
 test() {
     // testZfill();
     // testRjust();
-    testLjust();
+    // testLjust();
+    testCenter(); 
     // 剩下的测试函数调用需要你自行补足
 }
 
